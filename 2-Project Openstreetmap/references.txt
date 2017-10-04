@@ -1,0 +1,8 @@
+Here is the list of references I used to complete the project:
+- All python scripts used to audit, clean and analyse the data come from the case study provided in the previous lesson
+- The mongoDB queries were built using https://docs.mongodb.com
+- Queries were executed using Mongoboost software
+- For debugging and examples:
+	- python : https://www.python.org/doc/
+	- stackoverflow.com for all bugs and errors
+	- google in general as a starting point
