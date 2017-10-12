@@ -4,15 +4,22 @@
 
 import xml.etree.ElementTree as ET  # Use cElementTree or lxml if too slow
 
-OSM_FILE = "france-finistere-sud_export.osm"  # Replace this with your osm file
+"""
+
+    This script will extract a sample of the OSM_FILE and save it under SAMPLE_FILE
+
+"""
+OSM_FILE = "france-finistere-sud_export.osm"
 SAMPLE_FILE = "france-finistere-sud_export_sample.osm"
 
 k = 10 # Parameter: take every k-th top level element
 
 def get_element(osm_file, tags=('node', 'way', 'relation')):
-    """Yield element if it is the right type of tag
-    Reference:
-    http://stackoverflow.com/questions/3095434/inserting-newlines-in-xml-file-generated-via-xml-etree-elementtree-in-python
+    """
+        Yield element if it is the right type of tag
+        Reference:
+        http://stackoverflow.com/questions/3095434/inserting-newlines-in-xml-file-generated-via-xml-etree-elementtree-in-python
+        
     """
     context = iter(ET.iterparse(osm_file, events=('start', 'end')))
     _, root = next(context)
