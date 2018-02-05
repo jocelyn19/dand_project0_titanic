@@ -56,7 +56,7 @@ Legend:
 -	percentage_total_missing: percentage of the value missing (in total 146 records)
 
 
-|				|count|		poi		|percentage_total_missing|
+|		features|count|		poi		|percentage_total_missing|
 |------------|----------:|---------------------:|
 |bonus			 	|64|		2|		0.438356|
 |deferral_payments		|107		|13		|0.732877|
