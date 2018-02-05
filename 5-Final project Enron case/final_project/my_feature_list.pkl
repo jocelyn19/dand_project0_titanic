@@ -1,0 +1,16 @@
+(lp0
+S'poi'
+p1
+aS'salary_bonus_ratio'
+p2
+aS'total_payments'
+p3
+aS'loan_advances'
+p4
+aS'bonus'
+p5
+aS'from_poi_to_this_person'
+p6
+aS'from_this_person_to_poi'
+p7
+a.

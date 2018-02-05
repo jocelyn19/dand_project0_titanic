@@ -1,0 +1,8 @@
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\enron61702insiderpay.pdf
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\final_project_dataset.pkl
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\final_project_dataset_modified.pkl
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\my-directory-list.txt
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\poi_email_addresses.py
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\poi_id.py
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\poi_names.txt
+C:\Users\g477445\Documents\AnacondaProjects\ud120-projects-master\final_project\tester.py
