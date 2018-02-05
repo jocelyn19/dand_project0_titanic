@@ -1,4 +1,4 @@
-|# P5: Identify Fraud from Enron Email
+# P5: Identify Fraud from Enron Email
 ## Udacity Data Analyst Nanodegree
 **By Jocelyn Moreau**
 
@@ -55,6 +55,7 @@ Legend:
 -	POI: total of POI having avalue for this feature
 -	percentage_total_missing: percentage of the value missing (in total 146 records)
 
+
 |				|count|		poi		|percentage_total_missing|
 |------------|----------:|---------------------:|
 |bonus			 	|64|		2|		0.438356|
@@ -71,13 +72,14 @@ Legend:
 |long_term_incentive|80|6|0.547945|
 |other|53|0|0.363014|
 |poi|0|0|0.000000|
-|restricted_stock|36||1|0.246575|
+|restricted_stock|36|1|0.246575|
 |restricted_stock_deferred|128|18|0.876712|
 |salary|51|1|0.349315|
 |shared_receipt_with_poi|60|4|0.410959|
 |to_messages|60|4|0.410959|
-|total_payments|21||0|0.143836|
-|total_stock_value|20||0|0.136986|
+|total_payments|21|0|0.143836|
+|total_stock_value|20|0|0.136986|
+
 Looking at the missing values in the document named “enron61702insiderpay.pdf”, all of them have the value “-“, which means 0 in this case. We will have to take care of this later on.
 
 
@@ -225,7 +227,7 @@ The precision and the recall being defined as follow:
 - Recall is how often we guess the class (POI vs. non-POI) when the class actually occurred
 For our exercise here, we should concentrate on a higher recall rate, as it is better to identify non POI as POI than miss POI by declaring them as non POI. This is why I chose the classifier with the higher recall rate.
 
-References:
+### References:
 - https://chrisalbon.com/machine_learning/trees_and_forests/random_forest_classifier_example/
 - http://scikit-learn.org/
 - https://en.wikipedia.org/wiki/Precision_and_recall
