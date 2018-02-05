@@ -57,7 +57,7 @@ Legend:
 
 
 |		features|count|		poi		|percentage_total_missing|
-|------------|----------:|---------------------:|
+|------|------|----------:|---------------------:|
 |bonus			 	|64|		2|		0.438356|
 |deferral_payments		|107		|13		|0.732877|
 |deferred_income|97|7|0.664384|
