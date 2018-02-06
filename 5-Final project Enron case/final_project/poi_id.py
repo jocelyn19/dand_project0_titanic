@@ -49,7 +49,7 @@ print "Number of record of the dataset:", total_count
 ## 146 records counted
 print data_dict.keys()[0]
 
-#df = pd.DataFrame.from_dict(data_dict,orient='index')
+df = pd.DataFrame.from_dict(data_dict,orient='index')
 #print df
 #pprint.pprint(data_dict[data_dict.keys()[0]])
 ## The dataset has the following structure:
@@ -75,6 +75,7 @@ print data_dict.keys()[0]
 ## 'to_messages': 807,
 ## 'total_payments': 1061827,
 ## 'total_stock_value': 585062}}
+
 
 ## a lot of values are "NaN", lets assess the quality of the data we have:
 poi_count = 0
@@ -122,7 +123,7 @@ df = pd.DataFrame.from_dict({(i): missing_value_map[i]
                            for i in missing_value_map.keys()
                            },
                        orient='index')
-#print df
+print df
 ##Number of POI: 18
 ##Number of non POI: 128
 ##Missing values for each feature
@@ -225,12 +226,12 @@ pipeline = Pipeline(steps)
 # list of Parameters to test in GridsearchCV
 parameters = dict(
                   feature_selection__k=[2,3, 4, 5, 6],
-                  dtc__criterion=['gini', 'entropy'],
-                  dtc__splitter=['best', 'random'],
-                  dtc__max_depth=[None, 1, 2, 3, 4],
-                  dtc__min_samples_split=[1, 5, 10, 20, 25, 30, 35, 40,45],
-                  dtc__class_weight=[None, 'balanced'],
-                  dtc__random_state=[35, 42, 45, 50, 60],
+                  dtc__criterion=['entropy'], #['gini', 'entropy'],
+                  dtc__splitter=['random'], #['best', 'random'],
+                  dtc__max_depth=[2], #[None, 1, 2, 3, 4],
+                  dtc__min_samples_split=[40], #[1, 5, 10, 20, 25, 30, 35, 40,45],
+                  dtc__class_weight=['balanced'], #[None, 'balanced'],
+                  dtc__random_state=[45], #[35, 42, 45, 50, 60],
                   #knc__n_neighbors=[1, 2, 3, 4, 5,6,7],
                   #knc__leaf_size=[1, 10, 30, 60],
                   #knc__algorithm=['auto', 'ball_tree', 'kd_tree', 'brute'],
@@ -288,7 +289,7 @@ importances = clf.named_steps['dtc'].feature_importances_
 indices = np.argsort(importances)[::-1]
 print 'The ', len(features_selected), " features selected and their importances:"
 for i in range(len(features_selected)):
-    print "|{}|{}|{}|".format(i+1,features_selected[indices[i]],  round(importances[indices[i]],3), round(scores[indices[i]],3))
+    print "|{}|{}|{}|{}|".format(i+1,features_selected[indices[i]],  round(importances[indices[i]],3), round(scores[indices[i]],3))
 
 #Print classification report (focus on precision and recall)
 report = classification_report( labels_test, labels_predictions )
