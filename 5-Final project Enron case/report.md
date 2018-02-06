@@ -2,6 +2,13 @@
 ## Udacity Data Analyst Nanodegree
 **By Jocelyn Moreau**
 
+### Log change from submit #1:
+ - I cleaned up the files to have only the one required for this project
+ - class allocation between POI/non POI now stated in the report as well
+ - impact of the engineered feature salary_bonus_ratio: I added the kbest score in the table of the 6 selected features and a assessment of the new feature under this table.
+ - score of the features should come from k-best and not dtc: there was a mistake in my code, a missing "|{}|" thus the scores of the k-best feature selection were not printed. Now corrected.  I can't see any mistake in the formatting of the table (which appears correctly in my Atom IDE).
+
+
 ### Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those?  [relevant rubric items: “data exploration”, “outlier investigation”]
 
 The goals of this project is to create a Person Of Interest identifier, using machine learning techniques. The ML is useful as the amount of data available is huge, and no one can possibly go through each document and be able to find features leading to the detection of a POI (unless this person has decades and an army of co-workers to process the data). Moreover, Machine Learning is able to find patterns in the data which could not be found by human being.
@@ -13,6 +20,12 @@ This dataset is publicly available and contains a lots of information that can b
 #### Data exploration
 
 The dataset contains 146 records. The features in the data fall into three major types, namely financial features, email features and POI labels.
+
+#### POI / non POI allocation
+The dataset has the following POI / non POI class allocation:
+Number of POI: 18
+Number of non POI: 128
+Total : 146
 
 #### Features
 
@@ -51,12 +64,12 @@ All features have have missing values (represented as "NaN"), except for the "po
 The missing values are as follow:
 
 Legend:
--|Count: total of record missing a value
+- Count: total of record missing a value
 -	POI: total of POI having avalue for this feature
 -	percentage_total_missing: percentage of the value missing (in total 146 records)
 
 
-|		features|count|		poi		|percentage_total_missing|
+|		features		|count|		poi		|percentage_total_missing|
 |------|------|----------:|---------------------:|
 |bonus			 	|64|		2|		0.438356|
 |deferral_payments		|107		|13		|0.732877|
@@ -120,14 +133,18 @@ Best parameters are:
 
 The  6  features selected and their importances:
 
-| # | Name | importance |
-|--|--|--|
-|1|bonus|1.0|
-|2|from_this_person_to_poi|0.0|
-|3|from_poi_to_this_person|0.0|
-|4|loan_advances|0.0|
-|5|total_payments|0.0|
-|6|salary_bonus_ratio|0.0|
+| # | Name | importance for DTC | score kbest
+|--|--|--|--|
+|1|bonus|0.949|15.365|
+|2|from_poi_to_this_person|0.051|4.692|
+|3|from_this_person_to_poi|0.0|3.222|
+|4|loan_advances|0.0|5.727|
+|5|total_payments|0.0|6.778|
+|6|salary_bonus_ratio|0.0|0.181|
+
+##### Importance of the new features
+
+We can see above that our engineered feature  salary_bonus_ratio has little weight in the kbest scoring. What I thought was a good idea, was not so great. Trying the various classifier and comparing their performance with and without the new feature did not show any significant difference.
 
 #### Scaling
 
