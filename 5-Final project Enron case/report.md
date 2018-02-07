@@ -118,10 +118,10 @@ I decided to engineer the feature salary / bonus. This new feature could indicat
 
 To select the most relevant features, I used the select k-best model, in a pipeline with grid search CV to select the features as shown in Katie's blog.
 
-The first step, Select k-best, removes all but the k highest scoring features. The k features were then passed to a Decision Tree Classifier, with the 'f1' scoring estimator, intending to maximize precision and recall.
-Here is the list of features, automatically selected by K-Best and their scores with the dtc classifier:
+The first step, Select k-best, removes all but the k highest scoring features. The k features were then passed to a K-near Neighbors Classifier, with the 'f1' scoring estimator, intending to maximize precision and recall.
+Here is the list of features, automatically selected by K-Best and their scores with the knc classifier:
 
-##### DTC classifier
+##### KNC classifier
 Best parameters are:  
 - feature_selection__k: 6 (for k-best)
 - dtc__max_depth: 2 (for dtc)
@@ -131,16 +131,19 @@ Best parameters are:
 - dtc__class_weight: balanced
 - dtc__random_state: 42
 
-The  6  features selected and their importances:
+The  classifier selected the 6 first features out of 9:
 
-| # | Name | importance for DTC | score kbest
-|--|--|--|--|
-|1|bonus|0.949|15.365|
-|2|from_poi_to_this_person|0.051|4.692|
-|3|from_this_person_to_poi|0.0|3.222|
-|4|loan_advances|0.0|5.727|
-|5|total_payments|0.0|6.778|
-|6|salary_bonus_ratio|0.0|0.181|
+| # | Name | score kbest|
+|--|--|--|
+|1|bonus|30.729|
+|2|salary|15.85|
+|3|exercised_stock_options|9.68|
+|4|total_payments|8.959|
+|5|deferred_income|8.792|
+|6|restricted_stock|8.058|
+|7|loan_advances|7.038|
+|8|deferral_payments|0.010|
+|9|salary_bonus_ratio|0.007|
 
 ##### Importance of the new features
 
@@ -170,10 +173,12 @@ Here are the results for each classifier:
 #### Decision Tree Classifier
 Classification report:
 
-                    precision recall  f1-score   support
-        0.0         0.94      0.86      0.90        36
-        1.0         0.29      0.50      0.36         4
-        avg / total 0.87      0.82      0.85        40
+                    precision   recall  f1-score   support
+
+      0.0           0.96        0.61      0.74        38
+      1.0           0.21        0.80      0.33         5
+      avg / total   0.87        0.63      0.69        43
+
 
 #### Random Forest Classifier
                     precision    recall  f1-score   support
@@ -184,28 +189,28 @@ Classification report:
 
 #### k-nearest neighbors Classifier
 
-                        precision    recall  f1-score   support
+                      precision    recall  f1-score   support
 
-          0.0           0.89      0.94      0.92        36
-          1.0           0.00      0.00      0.00         4
-          avg / total   0.81      0.85      0.83        40
+          0.0         0.92        0.89      0.91        38
+          1.0         0.33        0.40      0.36         5
+    avg / total       0.85        0.84      0.84        43
 
 #### Cross check with the tester.px script:
 
                           DTC       RFC       KNC
-      Accuracy            0.79836   0.85893   0.82157
-      Precision           0.35340   0.51129   0.35900  
-      Recall              0.49600   0.28300   0.31700
-      F1                  0.41273   0.36434   0.33670
-      Total predictions   14000     14000     14000
-      True positives      992       566       634
-      False positives     1815      541       1132
-      False negatives     1008      1434      1366
-      True negatives:     10185     11459     10868
+      Accuracy            0.69847   0.85893   0.83033
+      Precision           0.22474   0.51129   0.35498  
+      Recall              0.51500   0.28300   0.33350
+      F1                  0.31293   0.36434   0.34390
+      Total predictions   15000     14000     15000
+      True positives      1030       566       667
+      False positives     3553      541       1212
+      False negatives     970      1434      1333
+      True negatives:     9447     11459     11788
 
-Looking at the figures, we can see that both DTC and KNC classifier fulfill the requirement of the tester.py script (Precision and recall > 0.3), but the DTC has a better performance, so that is the one I choose.
+Looking at the figures, we can see that the KNC classifier fulfill the requirement of the tester.py script (Precision and recall > 0.3), so that is the one I choose.
 
-#### Classifier selected --> Decision Tree Classifier
+#### Classifier selected --> k-nearest neighbors Classifier
 
 ### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: “tune the algorithm”]
 
@@ -214,14 +219,11 @@ If you don't tune well the algorithm, the performance is poor and the prediction
 
 For tuning my classifier, I used GridSearchCV. i took the example of Katie Malone's [blog](https://civisanalytics.com/blog/data-science/2016/01/06/workflows-python-using-pipeline-gridsearchcv-for-compact-code/). GridSearchCV allows us to construct a grid of all the combinations of parameters, tries each combination, and then reports back the best combination/model.
 
-For my chosen decision tree classifier, I fed GridSearchCV with different parameter values (the optimal ones are highlighted in bold below). I used Stratified Shuffle Split cross validation to guard against bias introduced by the potential underrepresentation of classes (i.e. POIs).
+For my chosen knc classifier, I fed GridSearchCV with different parameter values (the optimal ones are highlighted in bold below). I used Stratified Shuffle Split cross validation to guard against bias introduced by the potential underrepresentation of classes (i.e. POIs).
 
-  - dtc__criterion=['gini', '**entropy**'],
-  - dtc__splitter=['best', '**random**'],
-  - dtc__max_depth=[None, 1, **2**, 3, 4],
-  - dtc__min_samples_split=[1, 5, 10, 20, 25, 30, 35, **40**,45], (default was 2)
-  - dtc__class_weight=[None, '**balanced**'],
-  - dtc__random_state=[35, 42, **45**, 50, 60],
+  - knc__n_neighbors=[1, 2, 3, 4, **5**,6,7],
+  - knc__leaf_size=[**1**, 10, 30, 60],
+  - knc__algorithm=['**auto**', 'ball_tree', 'kd_tree', 'brute'],
 
 
 ### What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis?  [relevant rubric item: “validation strategy”]
@@ -234,9 +236,9 @@ To perform this validation, I used the function “train_test_split”, coupled 
 
 To evaluate the performance of my classifier, I used the precision and recall metrics. Their values are as follow:
 
-                          DTC  
-      Precision           0.353  
-      Recall              0.496
+                          KNC  
+      Precision           0.355  
+      Recall              0.333
 
 The precision and the recall being defined as follow:
 
