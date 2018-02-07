@@ -15,25 +15,25 @@ from tester import dump_classifier_and_data
 ### The first feature must be "poi".
 features_list = [
                  'poi',
-                 #'salary',
+                 'salary',
                  'salary_bonus_ratio',#--> engineered feature
-                 #'deferral_payments',
+                 'deferral_payments',
                  'total_payments',
                  'loan_advances',
                  'bonus',
                  #'restricted_stock_deferred',
-                 #'deferred_income',
+                 'deferred_income',
                  #'total_stock_value',
-                #'expenses',
+                 #'expenses',
                  #'director_fees',
-                 #'exercised_stock_options',
-                 # 'other',
-                  #'long_term_incentive',
-                  #'restricted_stock',
-                  #'to_messages',
-                  'from_poi_to_this_person',
-                  #'from_messages',
-                  'from_this_person_to_poi'
+                 'exercised_stock_options',
+                 #'other',
+                 #'long_term_incentive',
+                 'restricted_stock',
+                 #'to_messages',
+                 #'from_poi_to_this_person',
+                 #'from_messages',
+                 #'from_this_person_to_poi',
                  ]
 # Explore dataset
 
@@ -215,9 +215,9 @@ steps = [
          # Feature selection
          ('feature_selection', select), #feature selection together with dtc to select only the best features
          # Classifier
-         ('dtc', dtc),
+         #('dtc', dtc),
          #('rfc', rfc),
-         #('knc', knc),
+         ('knc', knc),
          ]
 
 # Creating the pipeline
@@ -225,16 +225,16 @@ pipeline = Pipeline(steps)
 
 # list of Parameters to test in GridsearchCV
 parameters = dict(
-                  feature_selection__k=[2,3, 4, 5, 6],
-                  dtc__criterion=['entropy'], #['gini', 'entropy'],
-                  dtc__splitter=['random'], #['best', 'random'],
-                  dtc__max_depth=[2], #[None, 1, 2, 3, 4],
-                  dtc__min_samples_split=[40], #[1, 5, 10, 20, 25, 30, 35, 40,45],
-                  dtc__class_weight=['balanced'], #[None, 'balanced'],
-                  dtc__random_state=[45], #[35, 42, 45, 50, 60],
-                  #knc__n_neighbors=[1, 2, 3, 4, 5,6,7],
-                  #knc__leaf_size=[1, 10, 30, 60],
-                  #knc__algorithm=['auto', 'ball_tree', 'kd_tree', 'brute'],
+                  feature_selection__k=[5, 6, 7, 8, 9],
+                  # dtc__criterion=['entropy'], #['gini', 'entropy'],
+                  # #dtc__splitter=['random'], #['best', 'random'],
+                  # dtc__max_depth=[None, 1, 2, 3, 4],
+                  # dtc__min_samples_split=[1, 5, 10, 20, 25, 30, 35, 40,45],
+                  # dtc__class_weight=['balanced'], #[None, 'balanced'],
+                  # dtc__random_state=[35, 42, 45, 50, 60],
+                  knc__n_neighbors=[1, 2, 3, 4, 5,6,7],
+                  knc__leaf_size=[1, 10, 30, 60],
+                  knc__algorithm=['auto', 'ball_tree', 'kd_tree', 'brute'],
                   #rfc__n_estimators=[10,20,30,40,50],
                   #rfc__max_features=['auto', 'sqrt', 'log2']
                   )
@@ -281,17 +281,20 @@ print "\n", "Best parameters are: ", gs.best_params_, "\n"
 # Print features selected and their importances (rfc,dtc) / scores (select)
 # comment if no selection process
 features_selected=[features_list[i+1] for i in clf.named_steps['feature_selection'].get_support(indices=True)]
-
+print clf.named_steps['feature_selection'].get_support(indices=True)
 scores = clf.named_steps['feature_selection'].scores_
 #change here the name of the classifier: dtc, rfc. but not for knc
-importances = clf.named_steps['dtc'].feature_importances_
+#importances = clf.named_steps['rfc'].feature_importances_
 
-indices = np.argsort(importances)[::-1]
-print 'The ', len(features_selected), " features selected and their importances:"
-for i in range(len(features_selected)):
-    print "|{}|{}|{}|{}|".format(i+1,features_selected[indices[i]],  round(importances[indices[i]],3), round(scores[indices[i]],3))
-
-#Print classification report (focus on precision and recall)
+indices = np.argsort(scores)[::-1]
+print scores, features_selected
+#print 'The ', len(features_selected), " features selected and their importances:"
+#for i in range(len(features_selected)):
+    #for dtc and rfc
+    #print "|{}|{}|{}|{}|".format(i+1,features_selected[indices[i]],  round(importances[indices[i]],3), round(scores[indices[i]],3))
+    #for knc only
+   #print "|{}|{}|{}|".format(i+1,features_selected[indices[i]], round(scores[indices[i]],3))
+   #Print classification report (focus on precision and recall)
 report = classification_report( labels_test, labels_predictions )
 print(report)
 
